@@ -316,8 +316,8 @@ const FlipCountdown = (props) => {
 
     return (
         <div className={`flip-countdown theme-${theme} size-${size}`}>
-            {!hideYear && getPiece('year')}
-            {!hideMonth && getPiece('month')}
+            {!hideYear && !allDays && getPiece('year')}
+            {!hideMonth && !allDays && getPiece('month')}
             {!hideDay && getPiece('day')}
             {!hideHour && getPiece('hour')}
             {!hideMinute && getPiece('minute')}
