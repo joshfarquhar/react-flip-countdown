@@ -55,6 +55,7 @@ const FlipCountdown = (props) => {
         hideSecond,
         titlePosition = 'top',
         endAtZero,
+        allDays
     } = props;
     let interval = null;
     let prev = moment.duration(moment().diff(moment()));
@@ -83,7 +84,7 @@ const FlipCountdown = (props) => {
         }
 
         // Year
-        if (!hideYear) {
+        if (!hideYear && !allDays) {
             clock.year.value[1](value.years());
             clock.year.prevValue[1](prev.years());
             if (
@@ -112,7 +113,7 @@ const FlipCountdown = (props) => {
         }
 
         // Months
-        if (!hideMonth) {
+        if (!hideMonth && !allDays) {
             clock.month.value[1](value.months());
             clock.month.prevValue[1](prev.months());
             if (
@@ -144,10 +145,13 @@ const FlipCountdown = (props) => {
 
         // Days
         if (!hideDay) {
-            clock.day.value[1](value.days());
-            clock.day.prevValue[1](prev.days());
+            let valueDays = allDays ? value.asDays() : value.days();
+            let prevDays = allDays ? prev.asDays() : prev.days();
+
+            clock.day.value[1](valueDays);
+            clock.day.prevValue[1](prevDays);
             if (
-                parseInt(value.days() / 10) !== parseInt(prev.days() / 10) &&
+                parseInt(valueDays / 10) !== parseInt(prevDays / 10) &&
                 clock.day.ref.current
             ) {
                 const section = clock.day.ref.current.querySelector(
@@ -159,7 +163,7 @@ const FlipCountdown = (props) => {
             }
 
             if (
-                parseInt(value.days() % 10) !== parseInt(prev.days() % 10) &&
+                parseInt(valueDays % 10) !== parseInt(prevDays % 10) &&
                 clock.day.ref.current
             ) {
                 const section = clock.day.ref.current.querySelector(
